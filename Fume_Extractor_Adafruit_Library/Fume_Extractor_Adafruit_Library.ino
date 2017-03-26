@@ -29,7 +29,7 @@ void setup() {
   pinMode(fanPin,OUTPUT);
   digitalWrite(fanPin,LOW);
   sensor.begin();
-  //Serial.begin(9600);
+  serialPort.begin(9600);
 
 }
 
