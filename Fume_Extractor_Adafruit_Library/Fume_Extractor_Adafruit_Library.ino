@@ -29,7 +29,7 @@ void setup() {
   digitalWrite(fanPin,LOW);
   
   sensor.begin();
-//  serialPort.begin(9600);
+  //serialPort.begin(9600);
 
 }
 
@@ -37,7 +37,7 @@ void loop() {
 
 
 
-//  serialPort.println(sensor.readObjectTempC());
+ // serialPort.println(sensor.readObjectTempC());
 
   if (sensor.readObjectTempC() > thTemp) {
     digitalWrite(fanPin,HIGH);
