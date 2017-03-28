@@ -5,15 +5,14 @@
  */
 
 #include <Adafruit_MLX90614_TinyWire.h>
-#include <SoftwareSerial.h>
-#include <avr/sleep.h>
-#include <avr/wdt.h>
+//#include <SoftwareSerial.h>
+
 
 Adafruit_MLX90614_TinyWire sensor = Adafruit_MLX90614_TinyWire();             // New object
-SoftwareSerial serialPort(-1, 4);                                             // Create a serial port
+//SoftwareSerial serialPort(-1, 4);                                             // Create a serial port
 
 
-const float   temp = 30;                                    // Threshold temperature
+const float   thTemp = 30;                                  // Threshold temperature
 const int     fanPin = 3;                                   // Fan pin
 const long    delayOff = 10000;                             // Delay to switch off fan
 
@@ -28,16 +27,19 @@ void setup() {
 
   pinMode(fanPin,OUTPUT);
   digitalWrite(fanPin,LOW);
+  
   sensor.begin();
-  serialPort.begin(9600);
+//  serialPort.begin(9600);
 
 }
 
 void loop() {
 
-  serialPort.println(sensor.readObjectTempC());
 
-  if (sensor.readObjectTempC() > temp ) {
+
+//  serialPort.println(sensor.readObjectTempC());
+
+  if (sensor.readObjectTempC() > thTemp) {
     digitalWrite(fanPin,HIGH);
     bOldState = true;
     
@@ -56,50 +58,13 @@ void loop() {
     
   }
 
-  sleep(1);
-
-}
-
-
-void setupWatchdog() {
-  cli();                                            // Disable global interrupts
-  // Set watchdog timer in interrupt mode
-  // allow changes, disable reset
-  WDTCR = bit (WDCE) | bit (WDE);
-  // set interrupt mode and an interval
-  WDTCR = bit (WDIE) | bit (WDP2) | bit (WDP0);     // set WDIE, and 1 seconds delay
-  sei();                                            // Enable global interrupts
-}
-
-
-void sleep(int times) {
-
-  setupWatchdog();                                  // Configure and activate Watchdog
-
-  for (int i = 0; i < times; i++) {
-
-    cli();                                          // Disable interruptions just in case
-    sleep_enable();                                 // Enable sleep
-
-    sei();                                          // Enable interruptions
-    sleep_cpu();                                    // Go to sleep
-    sleep_disable();                                // When cpu is awake, disable sleep
-
-  }
-
-  wdt_disable();                                    // Disable watchdog in order to not have more WDT interruptions
-}
-
-ISR(WDT_vect) {
-
-  // Nothing to do, just wake up
+  delay(2000);
 
 }
 
 void setupPowerSaving(){
   
-  ADCSRA = 0;
-  set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+  ADCSRA = 0;                                                   // Disable ADC
 
 }
 
