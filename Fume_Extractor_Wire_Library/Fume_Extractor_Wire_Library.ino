@@ -13,12 +13,15 @@
 
 const float   thTemp = 30;                                  // Threshold temperature
 const int     fanPin = 3;                                   // Fan pin
+const int     ledPin = 1;                                   // Led pin
 const long    delayOff = 10000;                             // Delay to switch off fan
 
 float         temp;                                         // Measured temp
 bool          bOldState = false;                            // Fan old state
+bool          bDelayActive = false;                         // Fan delay state
 unsigned long currentMillis = 0;                            // Current Millis()
-unsigned long oldMillis     = 0;                            // Previous Millis()
+unsigned long fanMillis     = 0;                            // Millis for fan delay
+unsigned long ledMillis     = 0;                            // Millis for led blink
 
 
 void setup() {
@@ -26,7 +29,9 @@ void setup() {
   setupPowerSaving();
 
   pinMode(fanPin,OUTPUT);
+  pinMode(ledPin,OUTPUT);
   digitalWrite(fanPin,LOW);
+  digitalWrite(ledPin,LOW);
   
   //serialPort.begin(9600);
   TinyWireM.begin();
@@ -36,34 +41,59 @@ void setup() {
 void loop() {
 
 
-  temp = sensorRead(0x5A,0x07);
-  temp *= 0.02;
-  temp -= 273;
+//  Measure every 500ms
+  if (millis() > currentMillis + 500) {
 
+      currentMillis = millis();
+      temp = sensorRead(0x5A,0x07);
+      temp *= 0.02;
+      temp -= 273;
+
+  }
+      
   //serialPort.println(temp);
 
+
+// Manage fan output
   if (temp > thTemp && temp < 1000) {
-    digitalWrite(fanPin,HIGH);
-    bOldState = true;
+     digitalWrite(fanPin,HIGH);
+     bOldState = true;
     
+   }
+   else if (temp < thTemp) {
+
+     if (bOldState == true) {
+       fanMillis = millis();
+       bOldState = false;
+       bDelayActive = true;
+      }
+
+      if( (millis() - fanMillis) > delayOff  && !bOldState){
+        digitalWrite(fanPin,LOW);
+        bDelayActive = false;
+       }
+          
+    }
+
+// Manage LED output
+
+  if (bOldState) digitalWrite(ledPin,HIGH);
+
+  if (bDelayActive) {
+
+      if (millis()-ledMillis > 300) {
+        PORTB ^= 0x02;
+        ledMillis = millis(); 
+      }
   }
   else {
-
-    if (bOldState == true) {
-      currentMillis = millis();
-      bOldState = false;
-    }
-
-    if( (millis() - currentMillis) > delayOff  && !bOldState){
-      digitalWrite(fanPin,LOW);
-    }
-      
     
+      digitalWrite(ledPin,LOW);
   }
-
-  delay(2000);
-
+  
 }
+ 
+
 
 void setupPowerSaving(){
   
