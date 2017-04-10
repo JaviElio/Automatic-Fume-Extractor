@@ -11,13 +11,14 @@
 //SoftwareSerial serialPort(-1, 4);                           // Create a serial port
 
 
-const float   thTemp = 30;                                  // Threshold temperature
+const float   thTemp = 10;                                  // Threshold temperature
 const int     fanPin = 3;                                   // Fan pin
 const int     ledPin = 1;                                   // Led pin
 const long    delayOff = 10000;                             // Delay to switch off fan
 
-float         temp;                                         // Measured temp
-bool          bOldState = false;                            // Fan old state
+float         objTemp;                                      // Measured object temp
+float         ambTemp;                                      // Measured ambient temp
+bool          bfanState = false;                            // Fan old state
 bool          bDelayActive = false;                         // Fan delay state
 unsigned long currentMillis = 0;                            // Current Millis()
 unsigned long fanMillis     = 0;                            // Millis for fan delay
@@ -45,30 +46,37 @@ void loop() {
   if (millis() > currentMillis + 500) {
 
       currentMillis = millis();
-      temp = sensorRead(0x5A,0x07);
-      temp *= 0.02;
-      temp -= 273;
+      
+      objTemp = sensorRead(0x5A,0x07);
+      objTemp *= 0.02;
+      objTemp -= 273;
+
+      ambTemp = sensorRead(0x5A,0x06);
+      ambTemp *= 0.02;
+      ambTemp -= 273;
+
+ //serialPort.println(temp);
 
   }
       
-  //serialPort.println(temp);
+ 
 
 
 // Manage fan output
-  if (temp > thTemp && temp < 1000) {
+  if ( (objTemp-ambTemp) > thTemp && objTemp < 1000) {
      digitalWrite(fanPin,HIGH);
-     bOldState = true;
+     bfanState = true;
     
    }
-   else if (temp < thTemp) {
+   else if ( (objTemp-ambTemp) < thTemp) {
 
-     if (bOldState == true) {
+     if (bfanState == true) {
        fanMillis = millis();
-       bOldState = false;
+       bfanState = false;
        bDelayActive = true;
       }
 
-      if( (millis() - fanMillis) > delayOff  && !bOldState){
+      if( (millis() - fanMillis) > delayOff  && !bfanState){
         digitalWrite(fanPin,LOW);
         bDelayActive = false;
        }
@@ -77,7 +85,7 @@ void loop() {
 
 // Manage LED output
 
-  if (bOldState) digitalWrite(ledPin,HIGH);
+  if (bfanState) digitalWrite(ledPin,HIGH);
 
   if (bDelayActive) {
 
