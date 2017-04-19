@@ -55,7 +55,10 @@ void loop() {
       ambTemp *= 0.02;
       ambTemp -= 273;
 
- //serialPort.println(temp);
+ //serialPort.print(objTemp);
+ //serialPort.print("   ");
+ //serialPort.println(ambTemp);
+ 
 
   }
       
@@ -66,7 +69,7 @@ void loop() {
   if ( (objTemp-ambTemp) > thTemp && objTemp < 1000) {
      digitalWrite(fanPin,HIGH);
      bfanState = true;
-    
+         
    }
    else if ( (objTemp-ambTemp) < thTemp) {
 
@@ -94,7 +97,7 @@ void loop() {
         ledMillis = millis(); 
       }
   }
-  else {
+  else if (!bfanState) {
     
       digitalWrite(ledPin,LOW);
   }
