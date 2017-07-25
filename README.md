@@ -6,7 +6,7 @@ If object temperature is 10 degrees higher than ambiente temperature, the fan an
 When temperature diference is less than 10 degrees,the fan stops after 10 seconds of delay. During this delay the led is blinking.
 
 
-Bill of material:
+**Bill of material:**
 
 	- Attiny85
 	- MLX90614
@@ -24,3 +24,10 @@ Bill of material:
 <img src="Images/IMG_20170725_191334.jpg" width=400>
 <img src="Images/IMG_20170725_191148_HDR.jpg" width=400>
 <img src="Images/IMG_20170725_190952_HDR.jpg" width=400>
+
+**SCHEMATIC:**
+
+Schematic.pdf
+
+https://github.com/JaviElio/Automatic-Fume-Extractor/blob/master/Schematic.pdf
+
