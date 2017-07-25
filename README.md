@@ -3,7 +3,7 @@ Automatic fume extractor for a soldering station
 
 MLX90614 sensor measures temperature. 
 If object temperature is 10 degrees higher than ambiente temperature, the fan and led are activated.
-When temperature diference is less than 10 degrees,the fan stops after 10 seconds of delay. During this delay the led is blinking.
+When temperature difference is less than 10 degrees,the fan stops after 10 seconds. During this delay the led is blinking.
 
 
 **Bill of material:**
