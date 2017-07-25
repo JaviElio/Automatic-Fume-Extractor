@@ -8,6 +8,7 @@ Bill of material:
 	- XL6009 DC-DC module
 	- 12V PC fan
 	- 1N4148
+	- BS170
 	- 10K resistor
 	- 330 resistor
 	- green Led
