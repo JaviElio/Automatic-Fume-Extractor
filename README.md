@@ -24,7 +24,7 @@ When temperature difference is less than 10 degrees,the fan stops after 10 secon
 <img src="Images/IMG_20170725_191334.jpg" width=400>
 <img src="Images/IMG_20170725_191148_HDR.jpg" width=400>
 <img src="Images/IMG_20170725_190952_HDR.jpg" width=400>
-<img src="Images/DSC01261.jpg" width=400>
+<img src="Images/DSC01261.JPG" width=400>
 
 **SCHEMATIC:**
 
