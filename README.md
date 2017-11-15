@@ -9,7 +9,7 @@ When temperature difference is less than 10 degrees,the fan stops after 10 secon
 **Bill of material:**
 
 	- Attiny85
-	- MLX90614
+	- MLX90614 module
 	- XL6009 DC-DC module
 	- 12V PC fan
 	- 1N4148
@@ -24,6 +24,7 @@ When temperature difference is less than 10 degrees,the fan stops after 10 secon
 <img src="Images/IMG_20170725_191334.jpg" width=400>
 <img src="Images/IMG_20170725_191148_HDR.jpg" width=400>
 <img src="Images/IMG_20170725_190952_HDR.jpg" width=400>
+<img src="Images/DSC01261.jpg" width=400>
 
 **SCHEMATIC:**
 
